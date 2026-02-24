@@ -11,29 +11,32 @@ export function CategoryPage() {
   const { categorySlug } = useParams<{ categorySlug: string }>();
   const [category, setCategory] = useState<Category | undefined>();
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [initialLoad, setInitialLoad] = useState(true);
+  const [displayedCount, setDisplayedCount] = useState(20);
 
   useEffect(() => {
     if (!categorySlug) return;
 
-    setLoading(true);
+    setDisplayedCount(20);
+    setInitialLoad(true);
+
     Promise.all([
       getCategoryBySlug(categorySlug),
-      getProductsByCategory(categorySlug),
+      getProductsByCategory(categorySlug, 100),
     ]).then(([cat, prods]) => {
       setCategory(cat);
       setProducts(prods);
-      setLoading(false);
+      setInitialLoad(false);
     });
   }, [categorySlug]);
 
-  if (loading) {
-    return <div className="plp">Loading...</div>;
-  }
+  const handleLoadMore = () => {
+    setDisplayedCount((prev) => Math.min(prev + 20, products.length));
+  };
 
-  if (!category) {
-    return <div className="plp">Category not found</div>;
-  }
+  const hasMore = displayedCount < products.length;
+  const showSkeletons = initialLoad && !category;
+  const displayedProducts = products.slice(0, displayedCount);
 
   return (
     <section className="plp">
@@ -45,8 +48,17 @@ export function CategoryPage() {
         <div className="plp-main">
           <div className="plp-topbar">
             <div>
-              <h1 className="plp-title">{category.name}</h1>
-              <p className="plp-subtitle">{category.description}</p>
+              {showSkeletons ? (
+                <>
+                  <div className="skeleton skeleton-title"></div>
+                  <div className="skeleton skeleton-subtitle"></div>
+                </>
+              ) : (
+                <>
+                  <h1 className="plp-title">{category?.name}</h1>
+                  <p className="plp-subtitle">{category?.description}</p>
+                </>
+              )}
             </div>
 
             <button type="button" className="plp-sort-btn">
@@ -55,22 +67,44 @@ export function CategoryPage() {
           </div>
 
           <div className="plp-grid" aria-label="Product grid">
-            {products.map((product) => (
-              <article key={product.id} className="product-card">
-                <div className="product-thumb" />
-                <h3 className="product-name">{product.name}</h3>
-                <p className="product-price">CHF {product.price}</p>
-              </article>
-            ))}
+            {showSkeletons
+              ? Array.from({ length: 8 }).map((_, i) => (
+                  <article key={i} className="product-card">
+                    <div className="skeleton skeleton-thumb" />
+                    <div className="skeleton skeleton-name"></div>
+                    <div className="skeleton skeleton-price"></div>
+                  </article>
+                ))
+              : displayedProducts.map((product) => (
+                  <article key={product.id} className="product-card">
+                    <div className="product-thumb">
+                      {product.image && (
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          loading="lazy"
+                        />
+                      )}
+                    </div>
+                    <h3 className="product-name">{product.name}</h3>
+                    <p className="product-price">CHF {product.price}</p>
+                  </article>
+                ))}
           </div>
         </div>
       </div>
 
-      <div className="plp-load-more-wrap">
-        <button type="button" className="plp-load-more-btn">
-          Load more
-        </button>
-      </div>
+      {!showSkeletons && hasMore && (
+        <div className="plp-load-more-wrap">
+          <button
+            type="button"
+            className="plp-load-more-btn"
+            onClick={handleLoadMore}
+          >
+            Load more ({displayedCount} of {products.length})
+          </button>
+        </div>
+      )}
     </section>
   );
 }

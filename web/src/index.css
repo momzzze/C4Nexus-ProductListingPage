@@ -190,9 +190,6 @@ textarea {
   gap: 0;
 }
 
-.mobile-nav-list li {
-}
-
 .mobile-nav-list a {
   display: block;
   text-decoration: none;
@@ -283,6 +280,16 @@ textarea {
   aspect-ratio: 1 / 1;
   background: #e2e8f0;
   margin-bottom: 0.625rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .product-name {
@@ -304,6 +311,52 @@ textarea {
   text-align: center;
   min-width: 160px;
 }
+
+/* Skeleton Loaders */
+.skeleton {
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-title {
+  height: 2rem;
+  width: 60%;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-subtitle {
+  height: 1.25rem;
+  width: 80%;
+}
+
+.skeleton-thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  margin-bottom: 0.625rem;
+}
+
+.skeleton-name {
+  height: 1rem;
+  width: 75%;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-price {
+  height: 0.875rem;
+  width: 40%;
+}
+
 .brand-logo {
   display: block;
   width: auto;
