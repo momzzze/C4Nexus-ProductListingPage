@@ -1,45 +1,98 @@
+import { useEffect, useState } from 'react';
+import {
+  getCategories,
+  getProductsByCategory,
+  type Category,
+  type Product,
+} from '../../../api/mockApi';
+import { CategoryCarousel } from '../components/CategoryCarousel';
+import './HomePage.css';
+
+interface CarouselSection {
+  category: Category;
+  products: Product[];
+}
+
 export function HomePage() {
-  // only for structure
-  const products = Array.from({ length: 8 }, (_, index) => ({
-    id: index + 1,
-    name: `Product ${index + 1}`,
-  }));
+  const [sections, setSections] = useState<CarouselSection[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const skeletonSections = ['Bags', 'Shoes', 'Watches'];
+
+  useEffect(() => {
+    async function loadSections() {
+      try {
+        const categories = await getCategories();
+        const sectionData = await Promise.all(
+          categories.map(async (category) => ({
+            category,
+            products: await getProductsByCategory(category.slug, 12),
+          }))
+        );
+
+        setSections(
+          sectionData.filter((section) => section.products.length > 0)
+        );
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadSections();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="home-page">
+        <h1 className="home-page__title">Featured Products</h1>
+        <div className="home-page__sections" aria-label="Loading carousels">
+          {skeletonSections.map((section) => (
+            <section
+              key={section}
+              className="home-carousel home-carousel--skeleton"
+            >
+              <header className="home-carousel__header">
+                <div className="home-carousel__header-main">
+                  <div className="skeleton home-carousel__skeleton-title" />
+                  <div className="skeleton home-carousel__skeleton-subtitle" />
+                </div>
+
+                <div className="home-carousel__actions">
+                  <div className="skeleton home-carousel__skeleton-action" />
+                  <div className="skeleton home-carousel__skeleton-nav" />
+                  <div className="skeleton home-carousel__skeleton-nav" />
+                </div>
+              </header>
+
+              <div className="home-carousel__container">
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <article key={index} className="home-carousel__slide">
+                    <div className="skeleton home-carousel__thumb home-carousel__skeleton-thumb" />
+                    <div className="skeleton home-carousel__skeleton-product-name" />
+                    <div className="skeleton home-carousel__skeleton-product-price" />
+                  </article>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <section className="plp">
-      <div className="plp-content-grid">
-        <aside className="plp-filter" aria-label="Product filters">
-          <h2 className="plp-block-title">Filter</h2>
-        </aside>
-
-        <div className="plp-main">
-          <div className="plp-topbar">
-            <div>
-              <h1 className="plp-title">Watches</h1>
-              <p className="plp-subtitle">Category description placeholder</p>
-            </div>
-
-            <button type="button" className="plp-sort-btn">
-              Sort: Relevance
-            </button>
-          </div>
-
-          <div className="plp-grid" aria-label="Product grid">
-            {products.map((product) => (
-              <article key={product.id} className="product-card">
-                <div className="product-thumb" />
-                <h3 className="product-name">{product.name}</h3>
-                <p className="product-price">CHF ---</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="plp-load-more-wrap">
-        <button type="button" className="plp-load-more-btn">
-          Load more
-        </button>
+    <section className="home-page">
+      <h1 className="home-page__title">Featured Products</h1>
+      <div className="home-page__sections">
+        {sections.map(({ category, products }) => (
+          <CategoryCarousel
+            key={category.id}
+            title={category.name}
+            description={category.description}
+            categorySlug={category.slug}
+            products={products}
+          />
+        ))}
       </div>
     </section>
   );

@@ -228,6 +228,10 @@ textarea {
   font-size: 0.95rem;
 }
 
+.plp-sort-wrapper {
+  position: relative;
+}
+
 .plp-sort-btn,
 .plp-load-more-btn {
   border: 1px solid #cbd5e1;
@@ -235,6 +239,44 @@ textarea {
   padding: 0.625rem 0.875rem;
   text-align: left;
   cursor: pointer;
+  width: 100%;
+}
+
+.plp-sort-btn:hover,
+.plp-load-more-btn:hover {
+  background: #f8fafc;
+}
+
+.plp-sort-dropdown {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  right: 0;
+  min-width: 100%;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  list-style: none;
+  z-index: 50;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.plp-sort-option {
+  width: 100%;
+  text-align: left;
+  padding: 0.625rem 0.875rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.plp-sort-option:hover {
+  background: #f1f5f9;
+}
+
+.plp-sort-option--active {
+  background: #e2e8f0;
+  font-weight: 600;
 }
 
 .plp-content-grid {
@@ -273,6 +315,7 @@ textarea {
   border: 1px solid #e2e8f0;
   background: #ffffff;
   padding: 0.75rem;
+  contain: layout style paint;
 }
 
 .product-thumb {
@@ -284,6 +327,7 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: center;
+  contain: content;
 }
 
 .product-thumb img {

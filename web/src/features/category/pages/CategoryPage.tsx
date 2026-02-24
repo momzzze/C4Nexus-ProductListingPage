@@ -6,6 +6,7 @@ import {
   type Category,
   type Product,
 } from '../../../api/mockApi';
+import { useSorting } from '../../../hooks/useSorting';
 
 export function CategoryPage() {
   const { categorySlug } = useParams<{ categorySlug: string }>();
@@ -13,6 +14,10 @@ export function CategoryPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [initialLoad, setInitialLoad] = useState(true);
   const [displayedCount, setDisplayedCount] = useState(20);
+  const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
+
+  const { sortBy, setSortBy, sortedProducts, currentLabel, sortOptions } =
+    useSorting(products);
 
   useEffect(() => {
     if (!categorySlug) return;
@@ -34,9 +39,9 @@ export function CategoryPage() {
     setDisplayedCount((prev) => Math.min(prev + 20, products.length));
   };
 
-  const hasMore = displayedCount < products.length;
+  const hasMore = displayedCount < sortedProducts.length;
   const showSkeletons = initialLoad && !category;
-  const displayedProducts = products.slice(0, displayedCount);
+  const displayedProducts = sortedProducts.slice(0, displayedCount);
 
   return (
     <section className="plp">
@@ -61,9 +66,35 @@ export function CategoryPage() {
               )}
             </div>
 
-            <button type="button" className="plp-sort-btn">
-              Sort: Relevance
-            </button>
+            <div className="plp-sort-wrapper">
+              <button
+                type="button"
+                className="plp-sort-btn"
+                onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
+                aria-expanded={sortDropdownOpen}
+                aria-haspopup="listbox"
+              >
+                Sort: {currentLabel}
+              </button>
+              {sortDropdownOpen && (
+                <ul className="plp-sort-dropdown" role="listbox">
+                  {sortOptions.map((option) => (
+                    <li key={option.value} role="option">
+                      <button
+                        type="button"
+                        className={`plp-sort-option ${sortBy === option.value ? 'plp-sort-option--active' : ''}`}
+                        onClick={() => {
+                          setSortBy(option.value);
+                          setSortDropdownOpen(false);
+                        }}
+                      >
+                        {option.label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
 
           <div className="plp-grid" aria-label="Product grid">
@@ -87,7 +118,7 @@ export function CategoryPage() {
                       )}
                     </div>
                     <h3 className="product-name">{product.name}</h3>
-                    <p className="product-price">CHF {product.price}</p>
+                    <p className="product-price">EUR {product.price}</p>
                   </article>
                 ))}
           </div>
@@ -101,7 +132,7 @@ export function CategoryPage() {
             className="plp-load-more-btn"
             onClick={handleLoadMore}
           >
-            Load more ({displayedCount} of {products.length})
+            Load more ({displayedCount} of {sortedProducts.length})
           </button>
         </div>
       )}

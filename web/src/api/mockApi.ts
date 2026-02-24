@@ -212,11 +212,11 @@ export async function getFilterOptions(
 
     // Price ranges
     filterOptions.price = [
-      { label: 'Under 50 CHF', value: '0-50' },
-      { label: '50 - 150 CHF', value: '50-150' },
-      { label: '150 - 300 CHF', value: '150-300' },
-      { label: '300 - 500 CHF', value: '300-500' },
-      { label: 'Above 500 CHF', value: '500-9999' },
+      { label: 'Under 50 EUR', value: '0-50' },
+      { label: '50 - 150 EUR', value: '50-150' },
+      { label: '150 - 300 EUR', value: '150-300' },
+      { label: '300 - 500 EUR', value: '300-500' },
+      { label: 'Above 500 EUR', value: '500-9999' },
     ];
 
     const materials = new Set(
