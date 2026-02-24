@@ -13,6 +13,11 @@ I also added header and footer parts with load more functionality for the produc
 Day2:
 Small progress with fixing some product mapping of the images.(Some of the PRs were with data from the previous day).
 I had some issues IRL so I could not work on 100%.but I manage to plant the context and the things that i need for cart and favorites its not in the requirements but I want to do it since I have 7 days.
+Added built in carousel for the home page and added some skeletons for the loading state of the carousels. - we are using the data from the the fake api functions for specific categories - we have one div for the carousel and header for 2 sections title of the category and navigation for the carousel
+build custom hook for sorting by giving the sorting name like string and the products
+-sorts are relevance, price low to high, price high to low, name A-Z, name Z-A
+-example im using switch case and use memoization for the sorted products to avoid unnecessary sorting on every render. For each case I sort like this: sorted.sort((a, b) => a.name.localeCompare(b.name));
+for the task is not usable but for expanding on this its good to have it in order to save time and to be more clean in the components.
 
 Difficulties:
 Day1: - I had some issues with the mock data I decided to use some free APIs since I don't know dealing with the chatGPT I stop on the API called https://dummyjson.com because reason one don't need api_key and reason two the dummy products inside were good identical images without background that allowed me to build a good looking product listing page. I wont add pagination because it's not needed we have load more button.
