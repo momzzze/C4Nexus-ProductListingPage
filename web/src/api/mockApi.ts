@@ -9,6 +9,8 @@ export interface Product {
   id: number;
   name: string;
   price: number;
+  discountedPrice?: number;
+  description?: string;
   category: string;
   image?: string;
   thumbnail?: string;
@@ -93,7 +95,9 @@ export const categories: Category[] = [
 interface DummyJSONProduct {
   id: number;
   title: string;
+  description: string;
   price: number;
+  discountPercentage?: number;
   category: string;
   brand: string;
   rating: number;
@@ -105,10 +109,23 @@ function transformProduct(
   dummyProduct: DummyJSONProduct,
   ourCategory: string
 ): Product {
+  const shouldHaveDiscount =
+    !!dummyProduct.discountPercentage && dummyProduct.id % 3 === 0;
+  const discountedPrice = shouldHaveDiscount
+    ? Number(
+        (
+          dummyProduct.price *
+          (1 - dummyProduct.discountPercentage / 100)
+        ).toFixed(2)
+      )
+    : undefined;
+
   return {
     id: dummyProduct.id,
     name: dummyProduct.title,
     price: dummyProduct.price,
+    discountedPrice,
+    description: dummyProduct.description,
     category: ourCategory,
     image: dummyProduct.thumbnail,
     brand: dummyProduct.brand,

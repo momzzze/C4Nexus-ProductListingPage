@@ -5,12 +5,43 @@ import logoIcon from '../../assets/c4nexus-logo-icon.png';
 import logoFull from '../../assets/c4-nexus.png';
 import { getCategories, type Category } from '../../api/mockApi';
 
+const CART_STORAGE_KEY = 'c4nexus-cart';
+
+interface CartStorageItem {
+  id: number;
+  quantity: number;
+}
+
 export function Header() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(() => {
+    const raw = localStorage.getItem(CART_STORAGE_KEY);
+    const cart: CartStorageItem[] = raw ? JSON.parse(raw) : [];
+    return cart.reduce((sum, item) => sum + item.quantity, 0);
+  });
+
+  const updateCartCount = () => {
+    const raw = localStorage.getItem(CART_STORAGE_KEY);
+    const cart: CartStorageItem[] = raw ? JSON.parse(raw) : [];
+    const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+    setCartCount(total);
+  };
 
   useEffect(() => {
+    localStorage.removeItem(CART_STORAGE_KEY);
+
     getCategories().then(setCategories);
+
+    const handleCartUpdated = () => updateCartCount();
+
+    window.addEventListener('c4nexus-cart-updated', handleCartUpdated);
+    window.addEventListener('storage', handleCartUpdated);
+
+    return () => {
+      window.removeEventListener('c4nexus-cart-updated', handleCartUpdated);
+      window.removeEventListener('storage', handleCartUpdated);
+    };
   }, []);
 
   return (
@@ -55,6 +86,9 @@ export function Header() {
         </nav>
         <button className="header-icon" aria-label="Shopping Cart">
           <FiShoppingCart size={20} />
+          {cartCount > 0 && (
+            <span className="header-cart-count">{cartCount}</span>
+          )}
         </button>
       </div>
 

@@ -7,6 +7,9 @@ import {
   type Product,
 } from '../../../api/mockApi';
 import { useSorting } from '../../../hooks/useSorting';
+import { ProductCard } from '../../../components/product/ProductCard';
+
+const PAGE_SIZE = 10;
 
 export function CategoryPage() {
   const priceRanges = [
@@ -21,7 +24,7 @@ export function CategoryPage() {
   const [category, setCategory] = useState<Category | undefined>();
   const [products, setProducts] = useState<Product[]>([]);
   const [initialLoad, setInitialLoad] = useState(true);
-  const [displayedCount, setDisplayedCount] = useState(20);
+  const [displayedCount, setDisplayedCount] = useState(PAGE_SIZE);
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
@@ -60,7 +63,7 @@ export function CategoryPage() {
   const resetFilters = () => {
     setSelectedBrands([]);
     setSelectedPriceRanges([]);
-    setDisplayedCount(20);
+    setDisplayedCount(PAGE_SIZE);
   };
 
   useEffect(() => {
@@ -74,7 +77,7 @@ export function CategoryPage() {
       setProducts(prods);
       setSelectedBrands([]);
       setSelectedPriceRanges([]);
-      setDisplayedCount(20);
+      setDisplayedCount(PAGE_SIZE);
       setFilterDrawerOpen(false);
       setInitialLoad(false);
     });
@@ -97,7 +100,7 @@ export function CategoryPage() {
         ? prev.filter((item) => item !== brand)
         : [...prev, brand]
     );
-    setDisplayedCount(20);
+    setDisplayedCount(PAGE_SIZE);
   };
 
   const handleTogglePriceRange = (range: string) => {
@@ -106,11 +109,13 @@ export function CategoryPage() {
         ? prev.filter((item) => item !== range)
         : [...prev, range]
     );
-    setDisplayedCount(20);
+    setDisplayedCount(PAGE_SIZE);
   };
 
   const handleLoadMore = () => {
-    setDisplayedCount((prev) => Math.min(prev + 20, sortedProducts.length));
+    setDisplayedCount((prev) =>
+      Math.min(prev + PAGE_SIZE, sortedProducts.length)
+    );
   };
 
   const hasMore = displayedCount < sortedProducts.length;
@@ -279,19 +284,7 @@ export function CategoryPage() {
                   </article>
                 ))
               : displayedProducts.map((product) => (
-                  <article key={product.id} className="product-card">
-                    <div className="product-thumb">
-                      {product.image && (
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          loading="lazy"
-                        />
-                      )}
-                    </div>
-                    <h3 className="product-name">{product.name}</h3>
-                    <p className="product-price">EUR {product.price}</p>
-                  </article>
+                  <ProductCard key={product.id} product={product} />
                 ))}
           </div>
 

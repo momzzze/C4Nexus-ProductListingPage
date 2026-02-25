@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import useEmblaCarousel from 'embla-carousel-react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import type { Product } from '../../../api/mockApi';
+import { ProductCard } from '../../../components/product/ProductCard';
 
 interface CategoryCarouselProps {
   title: string;
@@ -86,20 +87,11 @@ export function CategoryCarousel({
       <div className="home-carousel__viewport" ref={emblaRef}>
         <div className="home-carousel__container">
           {products.map((product, index) => (
-            <article
+            <ProductCard
               key={`${categorySlug}-${product.id}-${index}`}
+              product={product}
               className="home-carousel__slide"
-            >
-              <div className="home-carousel__thumb">
-                {product.image && (
-                  <img src={product.image} alt={product.name} loading="lazy" />
-                )}
-              </div>
-              <h3 className="home-carousel__product-name">{product.name}</h3>
-              <p className="home-carousel__product-price">
-                EUR {product.price}
-              </p>
-            </article>
+            />
           ))}
         </div>
       </div>
