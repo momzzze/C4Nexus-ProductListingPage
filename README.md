@@ -3,6 +3,15 @@
 Junior Developer Technical Task
 [Download Assignment PDF](./assignment.pdf)
 
+Live Demo:
+https://c4nexustask.netlify.app/category/accessories
+
+Run locally:
+
+1. cd web
+2. pnpm install
+3. pnpm dev
+
 Summary:
 Why im using React+ Vite + TS?
 
