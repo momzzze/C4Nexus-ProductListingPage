@@ -1,4 +1,5 @@
 import type { Product } from '../../api/mockApi';
+import './ProductCard.css';
 
 const CART_STORAGE_KEY = 'c4nexus-cart';
 

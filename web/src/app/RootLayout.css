@@ -1,0 +1,21 @@
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.container {
+  width: min(100%, 1200px);
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+.page-content {
+  padding-block: 1rem 2rem;
+}
+
+@media (min-width: 768px) {
+  .page-content {
+    padding-block: 1.5rem 2.5rem;
+  }
+}

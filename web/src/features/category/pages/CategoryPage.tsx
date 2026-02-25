@@ -8,6 +8,7 @@ import {
 } from '../../../api/mockApi';
 import { useSorting } from '../../../hooks/useSorting';
 import { ProductCard } from '../../../components/product/ProductCard';
+import './CategoryPage.css';
 
 const PAGE_SIZE = 10;
 

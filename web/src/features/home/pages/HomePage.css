@@ -99,6 +99,14 @@
   pointer-events: none;
 }
 
+.home-carousel__thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #e2e8f0;
+  margin-bottom: 0.625rem;
+  overflow: hidden;
+}
+
 .home-carousel__skeleton-title {
   width: 140px;
   height: 1.5rem;

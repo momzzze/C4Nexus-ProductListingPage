@@ -4,6 +4,7 @@ import { FiShoppingCart, FiMenu, FiX } from 'react-icons/fi';
 import logoIcon from '../../assets/c4nexus-logo-icon.png';
 import logoFull from '../../assets/c4-nexus.png';
 import { getCategories, type Category } from '../../api/mockApi';
+import './Header.css';
 
 const CART_STORAGE_KEY = 'c4nexus-cart';
 
