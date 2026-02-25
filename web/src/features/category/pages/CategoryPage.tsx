@@ -294,20 +294,27 @@ export function CategoryPage() {
                   </article>
                 ))}
           </div>
+
+          {!showSkeletons && (
+            <div className="plp-load-more-wrap">
+              <p className="plp-product-counter" aria-live="polite">
+                {displayedProducts.length} out of {sortedProducts.length}{' '}
+                products displayed.
+              </p>
+
+              {hasMore && (
+                <button
+                  type="button"
+                  className="plp-load-more-btn"
+                  onClick={handleLoadMore}
+                >
+                  Load more ({displayedCount} of {sortedProducts.length})
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
-
-      {!showSkeletons && hasMore && (
-        <div className="plp-load-more-wrap">
-          <button
-            type="button"
-            className="plp-load-more-btn"
-            onClick={handleLoadMore}
-          >
-            Load more ({displayedCount} of {sortedProducts.length})
-          </button>
-        </div>
-      )}
     </section>
   );
 }

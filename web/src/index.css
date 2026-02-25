@@ -254,6 +254,12 @@ textarea {
   gap: 0.5rem;
 }
 
+.plp-product-counter {
+  font-size: 0.9rem;
+  color: #475569;
+  text-align: center;
+}
+
 .plp-sort-dropdown {
   position: absolute;
   top: calc(100% + 0.25rem);
@@ -461,8 +467,10 @@ textarea {
 }
 
 .plp-load-more-wrap {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .plp-load-more-btn {
