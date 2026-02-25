@@ -109,16 +109,20 @@ function transformProduct(
   dummyProduct: DummyJSONProduct,
   ourCategory: string
 ): Product {
-  const shouldHaveDiscount =
-    !!dummyProduct.discountPercentage && dummyProduct.id % 3 === 0;
-  const discountedPrice = shouldHaveDiscount
-    ? Number(
-        (
-          dummyProduct.price *
-          (1 - dummyProduct.discountPercentage / 100)
-        ).toFixed(2)
-      )
-    : undefined;
+  let discountedPrice: number | undefined;
+
+  if (
+    typeof dummyProduct.discountPercentage === 'number' &&
+    dummyProduct.discountPercentage > 0 &&
+    dummyProduct.id % 3 === 0
+  ) {
+    discountedPrice = Number(
+      (
+        dummyProduct.price *
+        (1 - dummyProduct.discountPercentage / 100)
+      ).toFixed(2)
+    );
+  }
 
   return {
     id: dummyProduct.id,
