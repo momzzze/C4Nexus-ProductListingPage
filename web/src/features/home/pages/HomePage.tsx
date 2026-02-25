@@ -66,10 +66,18 @@ export function HomePage() {
 
               <div className="home-carousel__container">
                 {Array.from({ length: 4 }).map((_, index) => (
-                  <article key={index} className="home-carousel__slide">
-                    <div className="skeleton home-carousel__thumb home-carousel__skeleton-thumb" />
+                  <article
+                    key={index}
+                    className="home-carousel__slide product-card product-card--skeleton"
+                  >
+                    <div className="skeleton product-thumb home-carousel__skeleton-thumb" />
                     <div className="skeleton home-carousel__skeleton-product-name" />
+                    <div className="skeleton skeleton-description"></div>
+                    <div className="skeleton skeleton-description skeleton-description--short"></div>
+                    <div className="skeleton skeleton-rating"></div>
+                    <div className="skeleton skeleton-price-old"></div>
                     <div className="skeleton home-carousel__skeleton-product-price" />
+                    <div className="skeleton skeleton-button"></div>
                   </article>
                 ))}
               </div>

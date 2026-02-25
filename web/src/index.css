@@ -86,3 +86,31 @@ textarea {
   height: 0.875rem;
   width: 40%;
 }
+
+.skeleton-description {
+  height: 0.8rem;
+  width: 100%;
+  margin-bottom: 0.35rem;
+}
+
+.skeleton-description--short {
+  width: 72%;
+}
+
+.skeleton-rating {
+  height: 0.8rem;
+  width: 50%;
+  margin-bottom: 0.25rem;
+}
+
+.skeleton-price-old {
+  height: 0.75rem;
+  width: 34%;
+  margin-bottom: 0.2rem;
+}
+
+.skeleton-button {
+  height: 2.25rem;
+  width: 100%;
+  margin-top: auto;
+}

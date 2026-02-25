@@ -10,7 +10,7 @@ import { useSorting } from '../../../hooks/useSorting';
 import { ProductCard } from '../../../components/product/ProductCard';
 import './CategoryPage.css';
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 20;
 
 export function CategoryPage() {
   const priceRanges = [
@@ -277,11 +277,19 @@ export function CategoryPage() {
 
           <div className="plp-grid" aria-label="Product grid">
             {showSkeletons
-              ? Array.from({ length: 8 }).map((_, i) => (
-                  <article key={i} className="product-card">
+              ? Array.from({ length: PAGE_SIZE }).map((_, i) => (
+                  <article
+                    key={i}
+                    className="product-card product-card--skeleton"
+                  >
                     <div className="skeleton skeleton-thumb" />
                     <div className="skeleton skeleton-name"></div>
+                    <div className="skeleton skeleton-description"></div>
+                    <div className="skeleton skeleton-description skeleton-description--short"></div>
+                    <div className="skeleton skeleton-rating"></div>
+                    <div className="skeleton skeleton-price-old"></div>
                     <div className="skeleton skeleton-price"></div>
+                    <div className="skeleton skeleton-button"></div>
                   </article>
                 ))
               : displayedProducts.map((product) => (
